@@ -121,7 +121,7 @@ func _init():
 	spacing = spacing
 	renderSize = renderSize
 	focusDistance = focusDistance
-	#focusObject = focusObject
+	focusObject = focusObject
 	dofAmount = dofAmount
 	mode = mode
 	tilt = tilt
@@ -129,7 +129,6 @@ func _init():
 	center = center
 	viewPortionElement = viewPortionElement
 	subp = subp
-	set_notify_transform(true)
 
 func _ready():
 	mat = ShaderMaterial.new()
