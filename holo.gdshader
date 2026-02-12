@@ -1,11 +1,14 @@
 shader_type canvas_item;
 
-uniform sampler2D screenTexture : hint_screen_texture, repeat_disable, filter_linear;
+//uniform sampler2D screenTexture : hint_screen_texture, repeat_disable, filter_linear;
+uniform sampler2D screenTexture : repeat_disable, filter_linear;
 uniform float tilt = 0.0;
 uniform float pitch = 0.0;
 uniform float center = 0.0;
 uniform float viewPortionElement = 1.0;
 uniform float subp = 0.0;
+uniform float quiltAspect = 0.0;
+uniform float invertedScreenAspect = 0.0;
 uniform int viewCount = 1;
 uniform int cols = 1;
 uniform int rows = 1;
@@ -15,10 +18,28 @@ const int CENTER = 0;
 const int QUILT = 1;
 const int DISPLAY = 2;
 
+vec2 scaleAndCenter(vec2 coords)
+{
+	coords.y -= 0.5;
+	coords.y *= 1.0/quiltAspect;
+	coords.y += 0.5;
+	if(quiltAspect <= 1.0)
+	{
+		coords.y -= 0.5;
+		coords.y *= invertedScreenAspect*quiltAspect;
+		coords.y += 0.5;
+		coords.x -= 0.5;
+		coords.x *= invertedScreenAspect*quiltAspect;
+		coords.x += 0.5;
+	}
+	return coords;
+}
+
 vec2 texArr(vec3 uvz) {
     float z = floor(uvz.z * float(viewCount));
 	z = float((int(z)%cols)+(rows-1-int(z)/cols)*cols);
-    float x = (mod(z, float(cols)) + uvz.x) / float(cols);
+	uvz.xy = scaleAndCenter(uvz.xy);
+	float x = (mod(z, float(cols)) + uvz.x) / float(cols);
     float y = (floor(z / float(cols)) + uvz.y) / float(rows);
     return vec2(x, y) * vec2(viewPortionElement, viewPortionElement);
 }
@@ -46,9 +67,11 @@ void fragment() {
 	if (mode == CENTER) {
 		vec2 view = vec2(1.0/float(cols), 1.0/float(rows));
 		vec2 shift = vec2(round(float(cols)/2.0), round(float(rows)/2.0));
-		COLOR = texture(screenTexture, SCREEN_UV*view+view*shift);
+		vec2 coords = UV*view+view*shift;
+		coords = scaleAndCenter(coords);
+		COLOR = texture(screenTexture, coords);
 	} else if (mode == QUILT) {
-        COLOR = texture(screenTexture, SCREEN_UV);
+        COLOR = texture(screenTexture, UV);
     } else if (mode == DISPLAY) {
         COLOR = createHoloView(UV);
     }

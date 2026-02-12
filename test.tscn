@@ -16,10 +16,11 @@ mesh = ExtResource("1_37kl0")
 [node name="SpotLight3D" type="SpotLight3D" parent="." unique_id=1835626899]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -8.516705)
 
-[node name="HoloCamera" parent="." unique_id=2121373421 instance=ExtResource("3_6uqi0")]
-rows = 4
+[node name="HoloCamera" parent="." unique_id=2121373421 node_paths=PackedStringArray("focusObject") instance=ExtResource("3_6uqi0")]
+rows = 6
 cols = 8
 spacing = 0.91
+focusObject = NodePath("../Focus Object")
 focusDistance = 10.0
 mode = 2
 tilt = -0.114
@@ -27,3 +28,6 @@ pitch = 354.677
 center = 0.04199999999999981
 viewPortionElement = 0.9997600000000002
 subp = 0.00013020800000007
+
+[node name="Focus Object" type="Node3D" parent="." unique_id=1678789415]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -9.190565)
