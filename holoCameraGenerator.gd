@@ -63,31 +63,31 @@ enum Mode {
 		_safe_rebuild()
 
 @export_group("Display Calibration")
-@export_range(-1000.0, 1000.0, 0.0000000001)
+@export_range(-1000.0, 1000.0, 0.000001)
 var tilt := 0.0:
 	set(v):
 		tilt = v
 		_safe_rebuild()
 
-@export_range(-5000.0, 5000.0, 0.0000000001)		
+@export_range(-5000.0, 5000.0, 0.000001)		
 var pitch := 0.0:
 	set(v):
 		pitch = v
 		_safe_rebuild()
 
-@export_range(-5.0, 5.0, 0.0000000001)
+@export_range(-5.0, 5.0, 0.000001)
 var center : float = 0.0:
 	set(v):
 		center = v
 		_safe_rebuild()
 
-@export_range(-10.0, 10.0, 0.0000000001)
+@export_range(-10.0, 10.0, 0.000001)
 var viewPortionElement := 0.0:
 	set(v):
 		viewPortionElement = v
 		_safe_rebuild()
 
-@export_range(-1.0, 1.0, 0.0000000001)
+@export_range(-1.0, 1.0, 0.000001)
 var subp : float = 0.0:
 	set(v):
 		subp = v

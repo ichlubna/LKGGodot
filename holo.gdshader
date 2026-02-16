@@ -66,7 +66,7 @@ vec4 createHoloView(vec2 uv) {
 void fragment() {
 	if (mode == CENTER) {
 		vec2 view = vec2(1.0/float(cols), 1.0/float(rows));
-		vec2 shift = vec2(round(float(cols)/2.0), round(float(rows)/2.0));
+		vec2 shift = vec2(round(float(cols-1)/2.0), round(float(rows-1)/2.0));
 		vec2 coords = UV*view+view*shift;
 		coords = scaleAndCenter(coords);
 		COLOR = texture(screenTexture, coords);

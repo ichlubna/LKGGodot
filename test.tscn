@@ -1,32 +1,79 @@
 [gd_scene format=3 uid="uid://ci7qnmfmo2j11"]
 
 [ext_resource type="ArrayMesh" uid="uid://cc7y383d1j67e" path="res://Untitled.obj" id="1_37kl0"]
+[ext_resource type="Script" uid="uid://c42g7nhqlnp6n" path="res://cameraControl.gd" id="2_6uqi0"]
 [ext_resource type="PackedScene" uid="uid://lh62eoaay3l6" path="res://HoloCamera.tscn" id="3_6uqi0"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8uh7m"]
 albedo_color = Color(1, 0.3137255, 0, 1)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_6uqi0"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ppyta"]
+size = Vector3(100, 0.2, 100)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_6uqi0"]
+size = Vector2(100, 100)
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6uqi0"]
+
+[sub_resource type="Sky" id="Sky_6uqi0"]
+sky_material = SubResource("ProceduralSkyMaterial_6uqi0")
+
+[sub_resource type="Environment" id="Environment_ppyta"]
+background_mode = 2
+sky = SubResource("Sky_6uqi0")
+
 [node name="Node3D" type="Node3D" unique_id=2054800331]
 
-[node name="Untitled" type="MeshInstance3D" parent="." unique_id=25668037]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10)
+[node name="Suzanne" type="MeshInstance3D" parent="." unique_id=25668037]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1499631, -10)
 material_override = SubResource("StandardMaterial3D_8uh7m")
 mesh = ExtResource("1_37kl0")
 
-[node name="SpotLight3D" type="SpotLight3D" parent="." unique_id=1835626899]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -8.516705)
+[node name="SuzanneLight" type="SpotLight3D" parent="." unique_id=1835626899]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0054545, -8.516705)
 
 [node name="Focus Object" type="Node3D" parent="." unique_id=1678789415]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -9.190565)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.176069, -9.275115)
 
-[node name="HoloCamera" parent="." unique_id=2121373421 node_paths=PackedStringArray("focusObject") instance=ExtResource("3_6uqi0")]
+[node name="CharacterBody3D" type="CharacterBody3D" parent="." unique_id=628556991]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3156581, 0)
+
+[node name="SpringArm3D" type="SpringArm3D" parent="CharacterBody3D" unique_id=531768162]
+spring_length = 3.0
+margin = 10.0
+script = ExtResource("2_6uqi0")
+
+[node name="HoloCamera" parent="CharacterBody3D/SpringArm3D" unique_id=2121373421 node_paths=PackedStringArray("focusObject") instance=ExtResource("3_6uqi0")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.058734417)
-rows = 6
-cols = 8
+rows = 7
+cols = 7
 spacing = 0.91
-focusObject = NodePath("../Focus Object")
-focusDistance = 9.2493
+focusObject = NodePath("../../../Focus Object")
+focusDistance = 9.334892
+mode = 0
+tilt = -0.11394900000004782
 pitch = 354.677
 center = 0.04199999999999981
 viewPortionElement = 0.9997600000000002
 subp = 0.00013020800000007
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D" unique_id=1368377173]
+shape = SubResource("BoxShape3D_6uqi0")
+
+[node name="Player" type="MeshInstance3D" parent="CharacterBody3D" unique_id=309454758]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_8uh7m")
+mesh = ExtResource("1_37kl0")
+
+[node name="Floor" type="StaticBody3D" parent="." unique_id=821095079]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor" unique_id=408982865]
+shape = SubResource("BoxShape3D_ppyta")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor" unique_id=1088364959]
+mesh = SubResource("PlaneMesh_6uqi0")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=757875447]
+environment = SubResource("Environment_ppyta")
