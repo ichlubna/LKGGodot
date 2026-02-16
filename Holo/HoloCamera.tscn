@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://lh62eoaay3l6"]
 
-[ext_resource type="Script" uid="uid://8qtttiuyl4hi" path="res://holoCameraGenerator.gd" id="1_f0asr"]
+[ext_resource type="Script" uid="uid://8qtttiuyl4hi" path="res://Holo/holoCameraGenerator.gd" id="1_f0asr"]
 
 [node name="HoloCamera" type="Node3D" unique_id=2121373421]
 script = ExtResource("1_f0asr")

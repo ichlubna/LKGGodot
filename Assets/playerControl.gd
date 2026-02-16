@@ -14,9 +14,11 @@ enum Mode {
 		mode = v
 
 var pitch := 0.0
+var animationName = "Idle"
 
 @onready var player: CharacterBody3D = get_parent()
-@onready var playerMesh: MeshInstance3D = player.get_node("Player")
+@onready var playerMesh: Node3D = player.get_node("Player")
+@onready var animationPlayer: AnimationPlayer = playerMesh.get_node("AnimationPlayer")
 
 func setupPlayer():
 	if mode == Mode.THIRD:
@@ -68,15 +70,24 @@ func _physics_process(delta):
 
 	if Input.is_action_pressed("move_forward"):
 		direction += forward
+		animationName = "Walk"
 	if Input.is_action_pressed("move_backward"):
 		direction -= forward
+		animationName = "Walk"
 	if Input.is_action_pressed("move_right"):
 		direction += right
+		animationName = "WalkRight"
 	if Input.is_action_pressed("move_left"):
 		direction -= right
+		animationName = "WalkLeft"
 	if Input.is_action_pressed("jump"):
 		direction += up
-
+		animationName = "Jump"
+		
+	if direction.length() < 0.01 && player.velocity.length() < 0.01:
+		animationName = "Idle"
+		
+	animationPlayer.play(animationName)
 	direction = direction.normalized()
 
 	if not player.is_on_floor():

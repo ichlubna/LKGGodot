@@ -95,7 +95,7 @@ var subp : float = 0.0:
 
 var uiRoot: Control
 var mat: ShaderMaterial
-var shader := preload("res://holo.gdshader")
+var shader := preload("res://Holo/holo.gdshader")
 
 func _process(_delta: float):
 	if focusObject:
