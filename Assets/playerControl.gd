@@ -7,7 +7,8 @@ extends SpringArm3D
 @export var gravity := 9.8
 enum Mode {
 	FPS,
-	THIRD
+	THIRD,
+	TOP
 }
 @export var mode : Mode = Mode.THIRD:
 	set(v):
@@ -15,6 +16,7 @@ enum Mode {
 
 var pitch := 0.0
 var animationName = "Idle"
+var disablePitch = false
 
 @onready var player: CharacterBody3D = get_parent()
 @onready var playerMesh: Node3D = player.get_node("Player")
@@ -28,6 +30,12 @@ func setupPlayer():
 		margin = 0
 		spring_length = 0
 		playerMesh.visible = false
+	elif mode == Mode.TOP:
+		margin = 20
+		spring_length = 10
+		position.y = 5
+		rotation.x = 30
+		disablePitch = true
 
 func setupMovementInputs():
 	var mappings = {
@@ -57,16 +65,17 @@ func _input(event):
 		var mouse_delta: Vector2 = event.relative
 		rotate_y(-mouse_delta.x * mouseSensitivity)
 		playerMesh.rotate_y(-mouse_delta.x * mouseSensitivity)
-		pitch -= mouse_delta.y * mouseSensitivity
-		pitch = clamp(pitch, deg_to_rad(-85), deg_to_rad(85))
-		rotation.x = pitch
+		if not disablePitch:
+			pitch -= mouse_delta.y * mouseSensitivity
+			pitch = clamp(pitch, deg_to_rad(-85), deg_to_rad(85))
+			rotation.x = pitch
 
 func _physics_process(delta):
 	var direction := Vector3.ZERO
 
-	var forward = -transform.basis.z
-	var right = transform.basis.x
-	var up = transform.basis.y
+	var forward = -playerMesh.transform.basis.z
+	var right = playerMesh.transform.basis.x
+	var up = playerMesh.transform.basis.y
 
 	if Input.is_action_pressed("move_forward"):
 		direction += forward
@@ -75,10 +84,10 @@ func _physics_process(delta):
 		direction -= forward
 		animationName = "Walk"
 	if Input.is_action_pressed("move_right"):
-		direction += right
+		direction += right*0.5
 		animationName = "WalkRight"
 	if Input.is_action_pressed("move_left"):
-		direction -= right
+		direction -= right*0.5
 		animationName = "WalkLeft"
 	if Input.is_action_pressed("jump"):
 		direction += up
@@ -88,7 +97,6 @@ func _physics_process(delta):
 		animationName = "Idle"
 		
 	animationPlayer.play(animationName)
-	direction = direction.normalized()
 
 	if not player.is_on_floor():
 		player.velocity.y -= gravity * delta
@@ -97,6 +105,5 @@ func _physics_process(delta):
 
 	player.velocity.x = direction.x * moveSpeed
 	player.velocity.z = direction.z * moveSpeed
-	
 
 	player.move_and_slide()

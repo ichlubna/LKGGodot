@@ -12,11 +12,21 @@ albedo_color = Color(1, 0.3137255, 0, 1)
 radius = 0.3
 height = 1.31
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_ppyta"]
-size = Vector3(100, 0.2, 100)
-
 [sub_resource type="PlaneMesh" id="PlaneMesh_6uqi0"]
 size = Vector2(100, 100)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ppyta"]
+margin = 0.0
+size = Vector3(100, 0.01, 100)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ys1qc"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_ys1qc"]
+material = SubResource("StandardMaterial3D_ys1qc")
+size = Vector3(1, 0.3, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ys1qc"]
+size = Vector3(1, 0.3, 1)
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6uqi0"]
 
@@ -36,6 +46,7 @@ mesh = ExtResource("1_ys1qc")
 
 [node name="SuzanneLight" type="SpotLight3D" parent="." unique_id=1835626899]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0054545, -8.516705)
+shadow_enabled = true
 
 [node name="Focus Object" type="Node3D" parent="." unique_id=1678789415]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.176069, -9.275115)
@@ -48,14 +59,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.33258724, 0)
 spring_length = 3.0
 margin = 10.0
 script = ExtResource("2_35xla")
+moveSpeed = 10.0
+mode = 2
 
 [node name="HoloCamera" parent="CharacterBody3D/SpringArm3D" unique_id=2121373421 node_paths=PackedStringArray("focusObject") instance=ExtResource("3_i3aeo")]
-rows = 7
-cols = 7
+rows = 6
+cols = 8
 spacing = 0.5
 focusObject = NodePath("../../../Focus Object")
 focusDistance = 9.2771225
-mode = 0
+mode = 2
 tilt = -0.11394900000004782
 pitch = 354.677
 center = 0.04199999999999981
@@ -71,11 +84,27 @@ transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.091303825, 0)
 
 [node name="Floor" type="StaticBody3D" parent="." unique_id=821095079]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor" unique_id=408982865]
-shape = SubResource("BoxShape3D_ppyta")
-
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Floor" unique_id=1088364959]
 mesh = SubResource("PlaneMesh_6uqi0")
 
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor" unique_id=1748824305]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.772)
+shape = SubResource("BoxShape3D_ppyta")
+
+[node name="Step" type="StaticBody3D" parent="." unique_id=1851022568]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.49915373, -2.77214)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Step" unique_id=1074422728]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.38976115, 0)
+mesh = SubResource("BoxMesh_ys1qc")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Step" unique_id=1911648981]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.39, 0)
+shape = SubResource("BoxShape3D_ys1qc")
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=757875447]
 environment = SubResource("Environment_ppyta")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1495784080]
+transform = Transform3D(0.5591929, -0.50583327, 0.6568378, 0, 0.7922896, 0.61014515, -0.82903755, -0.34118885, 0.44304273, 0, 10.227583, 0)
+shadow_enabled = true
