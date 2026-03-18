@@ -12,6 +12,7 @@ uniform int viewCount = 1;
 uniform int cols = 1;
 uniform int rows = 1;
 uniform int mode = 0;
+uniform int process = 0;
 
 const int CENTER = 0;
 const int QUILT = 1;
@@ -74,4 +75,6 @@ void fragment() {
     } else if (mode == DISPLAY) {
         COLOR = createHoloView(UV);
     }
+	if (process == 1)
+		COLOR.r = 1.0;
 }

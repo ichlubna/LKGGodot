@@ -123,6 +123,7 @@ func updateShaderUniforms(screenSize, texture):
 	mat.set_shader_parameter("quiltAspect", float(cols)/rows)
 	mat.set_shader_parameter("invertedScreenAspect", float(screenSize.y)/screenSize.x)
 	mat.set_shader_parameter("screenTexture", texture)
+	mat.set_shader_parameter("process", process)
 
 func _init():
 	rows = rows
