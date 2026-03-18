@@ -60,15 +60,11 @@ spring_length = 3.0
 margin = 10.0
 script = ExtResource("2_35xla")
 moveSpeed = 10.0
-mode = 2
 
 [node name="HoloCamera" parent="CharacterBody3D/SpringArm3D" unique_id=2121373421 node_paths=PackedStringArray("focusObject") instance=ExtResource("3_i3aeo")]
-rows = 6
-cols = 8
 spacing = 0.5
 focusObject = NodePath("../../../Focus Object")
 focusDistance = 9.2771225
-mode = 2
 tilt = -0.11394900000004782
 pitch = 354.677
 center = 0.04199999999999981

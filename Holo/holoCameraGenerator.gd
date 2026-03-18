@@ -96,10 +96,19 @@ var subp : float = 0.0:
 var uiRoot: Control
 var mat: ShaderMaterial
 var shader := preload("res://Holo/holo.gdshader")
+var process = false;
 
 func _process(_delta: float):
 	if focusObject:
 		focusDistance = global_position.distance_to(focusObject.global_position)
+	if process == true:
+		var img = get_viewport().get_texture().get_image()
+		img.save_png("user://screenshot.png")
+		process = false;
+		_safe_rebuild()
+	if Input.is_key_pressed(KEY_ENTER):
+		process = true;
+		_safe_rebuild()
 
 func updateShaderUniforms(screenSize, texture):
 	mat.set_shader_parameter("mode", mode)
@@ -216,6 +225,20 @@ func rebuild():
 
 			var remoteTransform := RemoteTransform3D.new()
 			
+			if process:
+				var quad := MeshInstance3D.new()
+				var mesh := QuadMesh.new()
+				mesh.size = Vector2(2, 2) 
+				mesh.flip_faces = true   
+				quad.mesh = mesh
+				cam.current = true
+				cam.add_child(quad)
+				quad.position = Vector3(0, 0, -1)
+				var postMat := ShaderMaterial.new()
+				postMat.shader = Shader.new()
+				postMat.shader.code = preload("res://Holo/post.gdshader").code
+				quad.material_override = postMat
+			
 			vp.add_child(cam)
 			container.add_child(vp)
 			quiltVp.add_child(container)
@@ -225,5 +248,4 @@ func rebuild():
 			remoteTransform.use_global_coordinates = true
 
 			cam_index += -1
-
 	postProcess(screenSize, quiltVp.get_texture())
